@@ -23,10 +23,9 @@ let auth = {
     let token = req.headers['authorization-ledger']
     let username = db.sessions[token] && db.sessions[token].username
     let accountBeingUpdated = req.params.id
-
     let user = db.users[username]
     let userAccount = db.users[username] && db.users[username].accountId
-    if(accountBeingUpdated === userAccount) {
+    if(accountBeingUpdated == userAccount) {
       return next()
     } else {
      return next({

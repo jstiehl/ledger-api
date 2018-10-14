@@ -18,8 +18,10 @@ let handlers = {
       currentBalance: 0,
       transactionHistory: []
     }
+    let token = "asdfasdfasdfasdfasd" + Math.floor(Math.random()*66666666)
+    db.sessions[token] = {accessToken: token, username}
     //initial account setup. hence the default balance and empty transaction history
-    let responseBody = { currentBalance: 0, accountId, transactionHistory: [], username }
+    let responseBody = { accessToken: token }
 
     res.send(responseBody)
   },
@@ -29,9 +31,10 @@ let handlers = {
     let { username, password } = req.body
     if(db.users[username] && db.users[username].password === password) {
       let token = "asdfasdfasdfasdfasd" + Math.floor(Math.random()*66666666)
-      db.sessions[token] = {accessToken: token}
+      db.sessions[token] = {accessToken: token, username }
       res.send({accessToken: token})
     } else {
+      res.status = 403
       res.send("invalid login")
       //error handling would go here for invalid login
     }
@@ -43,6 +46,7 @@ let handlers = {
     let userAccountId = db.users[username].accountId
     let accountInfo = db.accounts[userAccountId]
     let response = { 
+      accountId: userAccountId,
       currentBalance: accountInfo.currentBalance, 
       transactionHistory: accountInfo.transactionHistory
     }
