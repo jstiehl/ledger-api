@@ -8,8 +8,8 @@ let handlers = {
     let accountId = req.params.id
     let account = db.accounts[accountId]
     let transactions = account.transactionHistory
-    transactions.push({ transactionType, transactionAmount, transactionDate })
     let newBalance = transactionType === "deposit" ? account.currentBalance + parseInt(transactionAmount) : account.currentBalance - parseInt(transactionAmount)
+    transactions.push({ transactionType, transactionAmount, transactionDate, balance: newBalance })
     //update account details
     db.accounts[accountId].currentBalance = newBalance
     db.accounts[accountId].transactionHistory = transactions
